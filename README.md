@@ -1,6 +1,7 @@
-# flutter_app_2
+# Contador de clicks
 
-A new Flutter project.
+![imagen](https://github.com/victoMR/Contador_con_flutter/assets/77412296/f858ceea-768d-4807-8014-3da1b03c593a)
+
 
 ## Getting Started
 
