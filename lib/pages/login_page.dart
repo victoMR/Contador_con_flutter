@@ -1,5 +1,7 @@
+//importM
 import 'package:flutter/material.dart';
 
+//stfulW
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -11,49 +13,45 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Stack(
-        children: [
-          // Fondo
-          _Fondo(),
-          // Formulario
-          _Formulario(),
-          // Boton
-          _Boton(),
-        ],
-      ),
-    );
-  }
-}
-
-// Fondo de la pagina
-class _Fondo extends StatelessWidget {
-  const _Fondo({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        decoration: const BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        tileMode: TileMode.clamp, // esto hace que se repita el gradiente
-        transform: GradientRotation(10.52551), // rotacion del gradiente
-        stops: [0.0, 1.0], // inicio y fin del gradiente
-        colors: [Color(0xff099ef3), Color(0xff57c2ff)],
-      ),
+        body: Stack(
+      children: [
+        Fondo(),
+        Contenido(),
+      ],
     ));
   }
 }
 
-// Formulario de la pagina
-class _Formulario extends StatefulWidget {
-  const _Formulario({super.key});
+//statelessW
+class Fondo extends StatelessWidget {
+  const Fondo({super.key});
 
   @override
-  State<_Formulario> createState() => __FormularioState();
+  Widget build(BuildContext context) {
+    return Container(
+      //min propiedad may widget, los wid aceptan propiedades
+      decoration: const BoxDecoration(
+          gradient: LinearGradient(
+        colors: [
+          Color.fromARGB(255, 125, 190, 243),
+          Colors.blue,
+        ],
+        begin: Alignment.centerRight,
+        end: Alignment.centerLeft,
+      )),
+    );
+  }
 }
 
-class __FormularioState extends State<_Formulario> {
+//StatefulW
+class Contenido extends StatefulWidget {
+  const Contenido({super.key});
+
+  @override
+  State<Contenido> createState() => _ContenidoState();
+}
+
+class _ContenidoState extends State<Contenido> {
   @override
   Widget build(BuildContext context) {
     return const Padding(
@@ -65,129 +63,303 @@ class __FormularioState extends State<_Formulario> {
           Text(
             'Login',
             style: TextStyle(
-                color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 28,
+            ),
           ),
-          SizedBox(height: 5),
+          SizedBox(
+            height: 5,
+          ),
           Text(
-            'Bienvenido a tu cuenta',
+            'Welcome to your count',
             style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 1.2),
+              color: Colors.white,
+              fontSize: 15,
+              letterSpacing: 1.5,
+            ),
           ),
-          SizedBox(height: 20),
-          // Input
-          _Input(),
+          SizedBox(height: 12),
+          Datos(),
+          SizedBox(
+            height: 15,
+          ),
+          _Politicas(),
         ],
       ),
     );
   }
 }
 
-// Input de la pagina
-class _Input extends StatefulWidget {
-  const _Input({super.key});
+class Datos extends StatefulWidget {
+  const Datos({super.key});
 
   @override
-  State<_Input> createState() => __InputState();
+  State<Datos> createState() => _DatosState();
 }
 
-class __InputState extends State<_Input> {
+class _DatosState extends State<Datos> {
+  bool showPass = true;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(10)),
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Correo',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-              )),
-          const SizedBox(height: 5),
+          const Text(
+            'Email',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
           TextFormField(
             keyboardType: TextInputType.emailAddress,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              hintText: 'ejemplo@correo.com',
-              hintStyle: const TextStyle(color: Colors.grey),
-              focusColor: Colors.blueAccent,
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Colors.blueAccent),
-              ),
-            ),
-            autocorrect: false,
-            autofillHints: const [AutofillHints.email],
-            cursorColor: Colors.grey,
-            cursorRadius: const Radius.circular(5),
-            cursorWidth: 2,
-            cursorOpacityAnimates: true,
-            obscureText: false,
+            style: const TextStyle(color: Colors.black, fontSize: 15),
             autofocus: true,
-          ),
-          const SizedBox(height: 20),
-          const Text('Contraseña',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-              )),
-          const SizedBox(height: 5),
-          TextFormField(
-            obscureText: true,
-            keyboardType: TextInputType.visiblePassword,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              hintText: '*********',
-              suffixIcon: IconButton(
-                onPressed: () {},
-                color: Colors.black,
-                focusColor: Colors.blueAccent,
-                icon: const Icon(Icons.remove_red_eye),
-                selectedIcon: const Icon(Icons.remove_red_eye_outlined),
-                iconSize: 20,
-              ),
-              hintStyle: const TextStyle(color: Colors.grey),
-              focusColor: Colors.blueAccent,
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Colors.blue),
-              ),
-            ),
-            autocorrect: false,
-            autofillHints: const [AutofillHints.password],
             cursorColor: Colors.grey,
-            cursorRadius: const Radius.circular(5),
-            cursorWidth: 2,
-            cursorOpacityAnimates: true,
-            autofocus: false,
-            // Falta el boton (ojo) de mostrar contraseña
+            cursorRadius: const Radius.circular(16),
+            cursorWidth: 2.0,
+            maxLength: 30,
+            decoration: InputDecoration(
+              // Personalizar el borde cuando no está seleccionado
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(color: Colors.black),
+              ),
+              // Personalizar el borde cuando está seleccionado
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: const BorderSide(color: Colors.black),
+              ),
+              hintText: 'micorreo@micorreo.com',
+            ),
           ),
-          const SizedBox(height: 20),
-          // Boton
-          const _Boton(),
+          const SizedBox(
+            height: 5,
+          ),
+          const Text(
+            'Password',
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 15,
+            ),
+          ),
+          const SizedBox(
+            height: 5,
+          ),
+          TextFormField(
+            obscureText: showPass,
+            style: const TextStyle(color: Colors.black, fontSize: 15),
+            cursorColor: Colors.grey,
+            cursorRadius: const Radius.circular(16),
+            cursorWidth: 2.0,
+            maxLength: 30,
+            decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(color: Colors.black),
+                ),
+                // Personalizar el borde cuando está seleccionado
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: const BorderSide(color: Colors.black),
+                ),
+                fillColor: Colors.blueAccent,
+                hintText: 'Password',
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.remove_red_eye_outlined),
+                  onPressed: () => {
+                    setState(() {
+                      showPass == true ? showPass = false : showPass = true;
+                    })
+                  },
+                )),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          const Remember(),
+          const SizedBox(
+            height: 20,
+          ),
+          const Botones(),
         ],
       ),
     );
   }
 }
 
-// Boton de la pagina
-class _Boton extends StatelessWidget {
-  const _Boton({super.key});
+// si va a tener funcionamiento  statefulW
+
+class Remember extends StatefulWidget {
+  const Remember({super.key});
 
   @override
+  State<Remember> createState() => _RememberState();
+}
+
+class _RememberState extends State<Remember> {
+  bool checked = false;
+  @override
   Widget build(BuildContext context) {
-    return Container();
+    return Row(
+      children: [
+        Checkbox(
+          value: checked,
+          activeColor: Colors.blue,
+          side: const BorderSide(color: Colors.grey),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5),
+          ),
+          onChanged: (value) => {
+            setState(() {
+              checked == false ? checked = true : checked = false;
+            }),
+          },
+        ),
+        const Text('Recordar', style: TextStyle(fontSize: 15)),
+        const Spacer(),
+        TextButton(
+          onPressed: () => {},
+          child: const Text(
+            'Olvidaste Contraseña?',
+            style: TextStyle(fontSize: 12, color: Colors.blue),
+          ),
+        ),
+      ],
+    );
   }
 }
 
-// Path: lib/pages/login_page.dart
+class Botones extends StatelessWidget {
+  const Botones({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          width: double.infinity,
+          height: 50,
+          child: ElevatedButton(
+            onPressed: () => {},
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20))),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(const Color(0xff142047))),
+            child: const Text(
+              'Login',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 25,
+          width: double.infinity,
+        ),
+        const Text(
+          'Or login with',
+          style: TextStyle(color: Color.fromARGB(255, 79, 77, 77)),
+        ),
+        const SizedBox(
+          height: 25,
+          width: double.infinity,
+        ),
+        SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: OutlinedButton(
+                onPressed: () => {},
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20))),
+                ),
+                child: const Text(
+                  'Google',
+                  style: TextStyle(
+                      color: Color(0xff142047),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ))),
+        const SizedBox(
+          height: 15,
+          width: double.infinity,
+        ),
+        SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: OutlinedButton(
+                onPressed: () => {},
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20))),
+                ),
+                child: const Text(
+                  'Facebook',
+                  style: TextStyle(
+                      color: Color(0xff142047),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ))),
+        const SizedBox(
+          height: 30,
+          width: double.infinity,
+        ),
+      ],
+    );
+  }
+}
+
+class _Politicas extends StatelessWidget {
+  const _Politicas({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(
+          height: 5,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: () => {},
+              child: const Text(
+                'Leer los ',
+                style: TextStyle(
+                    color: Color.fromARGB(255, 232, 232, 232),
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            TextButton(
+              onPressed: () => {},
+              child: const Text(
+                'Terminos y Condiciones',
+                style: TextStyle(
+                    color: Color.fromARGB(255, 79, 77, 77),
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
