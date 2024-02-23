@@ -142,7 +142,7 @@ class _DatosState extends State<Datos> {
                 borderRadius: BorderRadius.circular(10.0),
                 borderSide: const BorderSide(color: Colors.black),
               ),
-              hintText: 'micorreo@micorreo.com',
+              hintText: 'micorreo@gmail.com',
             ),
           ),
           const SizedBox(
@@ -177,7 +177,7 @@ class _DatosState extends State<Datos> {
                   borderSide: const BorderSide(color: Colors.black),
                 ),
                 fillColor: Colors.blueAccent,
-                hintText: 'Password',
+                hintText: '********',
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.remove_red_eye_outlined),
                   onPressed: () => {
@@ -232,7 +232,9 @@ class _RememberState extends State<Remember> {
         const Text('Recordar', style: TextStyle(fontSize: 15)),
         const Spacer(),
         TextButton(
-          onPressed: () => {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/reset_password');
+          },
           child: const Text(
             'Olvidaste Contraseña?',
             style: TextStyle(fontSize: 12, color: Colors.blue),
@@ -342,7 +344,7 @@ class _Politicas extends StatelessWidget {
             TextButton(
               onPressed: () => {},
               child: const Text(
-                'Leer los ',
+                'Leer los',
                 style: TextStyle(
                     color: Color.fromARGB(255, 232, 232, 232),
                     fontWeight: FontWeight.bold),
