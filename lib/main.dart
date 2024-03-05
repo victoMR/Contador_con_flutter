@@ -12,11 +12,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      initialRoute: '/', // Página de inicio
+      initialRoute: '/',
       routes: {
         '/': (context) => const LoginPage(),
-        '/reset_password': (context) =>
-            const ResetPasswordPage(), // Ruta para la nueva página
+        '/reset_password': (context) => const ResetPasswordPage(),
       },
     );
   }
