@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePageOk extends StatelessWidget {
-  const HomePageOk({Key? key}) : super(key: key);
+  final String userName;
+  const HomePageOk({Key? key, required this.userName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,17 +15,18 @@ class HomePageOk extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              '¡Bienvenido!',
-              style: TextStyle(
+            Text(
+              '¡Bienvenido, $userName!', // Muestra el nombre del usuario
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                // Puedes agregar aquí la lógica para cerrar sesión si es necesario
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                // ignore: use_build_context_synchronously
                 Navigator.pop(
                     context); // Esto llevará al usuario de regreso a la página anterior
               },

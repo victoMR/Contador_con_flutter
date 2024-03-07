@@ -25,7 +25,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => const LoginPage(),
         '/reset_password': (context) => const ResetPasswordPage(),
         '/register': (context) => const RegisterPage(),
-        '/home': (context) => const HomePageOk(),
+        '/home': (context) => HomePageOk(
+            userName: ModalRoute.of(context)!.settings.arguments as String),
       },
     );
   }

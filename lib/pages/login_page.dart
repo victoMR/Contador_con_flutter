@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 
 final TextEditingController _emailController = TextEditingController();
@@ -23,26 +24,48 @@ Future<void> signInWithEmailAndPassword(
   }
 }
 
-// Future<UserCredential> signInWithGoogle() async {
-//   // Option 1: Using a `<meta>` Tag (ensure it's in your HTML)
-//   // <meta name="google-signin-client_id" content="YOUR_CLIENT_ID" />
+Future<void> signInWithGoogle(BuildContext context) async {
+  try {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) return; // El usuario canceló el inicio de sesión
 
-//   // Option 2: Passing clientId During Initialization
-//   final googleSignIn = GoogleSignIn(
-//       clientId:
-//           '52009484379-tq2c1t6jkng2e64t2rnt6nlsk232s2it.apps.googleusercontent.com');
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
 
-//   final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-//   final GoogleSignInAuthentication googleAuth =
-//       await googleUser!.authentication;
+    final UserCredential authResult =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    final User user = authResult.user!;
+    print('Inició sesión con Google: ${user.displayName}');
+    // Redirige al usuario a la pantalla principal (home) y mandar user para improimir en home
+    // ignore: use_build_context_synchronously
+    Navigator.pushNamed(context, '/home', arguments: user.displayName);
+  } catch (e) {
+    print('Error al iniciar sesión con Google: $e');
+  }
+}
 
-//   final OAuthCredential credential = GoogleAuthProvider.credential(
-//     accessToken: googleAuth.accessToken,
-//     idToken: googleAuth.idToken,
-//   );
-
-//   return await FirebaseAuth.instance.signInWithCredential(credential);
-// }
+Future<UserCredential?> signInWithGitHub(BuildContext context) async {
+  try {
+    GithubAuthProvider githubProvider = GithubAuthProvider();
+    githubProvider.addScope('read:user');
+    githubProvider.addScope('user:email');
+    final UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithPopup(githubProvider);
+    final User user = userCredential.user!;
+    print('Inició sesión con GitHub: ${user.displayName}');
+    // Redirige al usuario a la pantalla principal (home) y manda el nombre del usuario
+    // ignore: use_build_context_synchronously
+    Navigator.pushNamed(context, '/home', arguments: user.displayName);
+    return userCredential;
+  } catch (e) {
+    print('Error al iniciar sesión con GitHub: $e');
+    return null; // Agrega este retorno nulo
+  }
+}
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -402,7 +425,7 @@ class Botones extends StatelessWidget {
           width: double.infinity,
           height: 50,
           child: OutlinedButton(
-            onPressed: () => {/*signInWithGoogle()*/},
+            onPressed: () => {signInWithGoogle(context)},
             style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
@@ -428,7 +451,9 @@ class Botones extends StatelessWidget {
           width: double.infinity,
           height: 50,
           child: OutlinedButton(
-            onPressed: () => {},
+            onPressed: () => {
+              signInWithGitHub(context),
+            },
             style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
@@ -437,7 +462,7 @@ class Botones extends StatelessWidget {
               ),
             ),
             child: const Text(
-              'Facebook',
+              'GitHub',
               style: TextStyle(
                 color: Color(0xff142047),
                 fontWeight: FontWeight.bold,
