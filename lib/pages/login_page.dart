@@ -1,6 +1,48 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app_2/pages/homeOk_page.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
+
+final TextEditingController _emailController = TextEditingController();
+final TextEditingController _passwordController = TextEditingController();
+
+Future<void> signInWithEmailAndPassword(
+    String email, String password, BuildContext context) async {
+  try {
+    // ignore: unused_local_variable
+    final credential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    // Usuario inició sesión exitosamente, navegar a la página principal
+    // ignore: use_build_context_synchronously
+    Navigator.pushNamed(context, '/home');
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      print('No se encontró ningún usuario con ese correo electrónico.');
+    } else if (e.code == 'wrong-password') {
+      print('Contraseña incorrecta para ese usuario.');
+    }
+  }
+}
+
+// Future<UserCredential> signInWithGoogle() async {
+//   // Option 1: Using a `<meta>` Tag (ensure it's in your HTML)
+//   // <meta name="google-signin-client_id" content="YOUR_CLIENT_ID" />
+
+//   // Option 2: Passing clientId During Initialization
+//   final googleSignIn = GoogleSignIn(
+//       clientId:
+//           '52009484379-tq2c1t6jkng2e64t2rnt6nlsk232s2it.apps.googleusercontent.com');
+
+//   final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+//   final GoogleSignInAuthentication googleAuth =
+//       await googleUser!.authentication;
+
+//   final OAuthCredential credential = GoogleAuthProvider.credential(
+//     accessToken: googleAuth.accessToken,
+//     idToken: googleAuth.idToken,
+//   );
+
+//   return await FirebaseAuth.instance.signInWithCredential(credential);
+// }
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -69,7 +111,7 @@ class _ContenidoState extends State<Contenido> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,7 +190,7 @@ class _DatosState extends State<Datos> {
             height: 5,
           ),
           TextFormField(
-            controller: widget.emailController,
+            controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             style: const TextStyle(color: Colors.black, fontSize: 15),
             autofocus: true,
@@ -172,7 +214,7 @@ class _DatosState extends State<Datos> {
             height: 5,
           ),
           const Text(
-            'Password',
+            'Contraseña',
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -183,7 +225,7 @@ class _DatosState extends State<Datos> {
             height: 5,
           ),
           TextFormField(
-            controller: widget.passwordController,
+            controller: _passwordController,
             obscureText: showPass,
             style: const TextStyle(color: Colors.black, fontSize: 15),
             cursorColor: Colors.grey,
@@ -278,24 +320,26 @@ class Botones extends StatelessWidget {
           width: double.infinity,
           height: 50,
           child: ElevatedButton(
-            onPressed: () async {
-              try {
-                var emailController;
-                var passwordController;
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
-                  email: emailController.text,
-                  password: passwordController.text,
-                );
-                // Usuario inició sesión exitosamente, navega a la siguiente pantalla
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => HomePageOk()));
-              } catch (e) {
-                // Error al iniciar sesión, muestra un mensaje de error al usuario
-                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text(
-                      'Error al iniciar sesión. Por favor, verifica tus credenciales.'),
-                ));
-              }
+            onPressed: () {
+              signInWithEmailAndPassword(
+                  _emailController.text, _passwordController.text, context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Iniciando sesión...'),
+                ),
+              );
+              // Si el usuario no existe, muestra un mensaje de error
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Usuario no encontrado'),
+                ),
+              );
+              // Si la contraseña es incorrecta, muestra un mensaje de error
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Contraseña incorrecta'),
+                ),
+              );
             },
             style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -316,9 +360,39 @@ class Botones extends StatelessWidget {
           height: 25,
           width: double.infinity,
         ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              '¿No tienes una cuenta?',
+              style: TextStyle(
+                color: Color.fromARGB(255, 79, 77, 77),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/register');
+              },
+              child: const Text(
+                'Regístrate',
+                style: TextStyle(
+                  color: Color(0xff142047),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 10,
+          width: double.infinity,
+        ),
         const Text(
-          'Or login with',
-          style: TextStyle(color: Color.fromARGB(255, 79, 77, 77)),
+          'O inicia sesión con:',
+          style: TextStyle(
+              color: Color.fromARGB(255, 90, 90, 90),
+              fontWeight: FontWeight.bold),
         ),
         const SizedBox(
           height: 25,
@@ -328,7 +402,7 @@ class Botones extends StatelessWidget {
           width: double.infinity,
           height: 50,
           child: OutlinedButton(
-            onPressed: () => {},
+            onPressed: () => {/*signInWithGoogle()*/},
             style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
@@ -407,7 +481,7 @@ class _Politicas extends StatelessWidget {
             TextButton(
               onPressed: () => {},
               child: const Text(
-                'Terminos y Condiciones',
+                'Términos y Condiciones',
                 style: TextStyle(
                   color: Color.fromARGB(255, 79, 77, 77),
                   fontWeight: FontWeight.bold,

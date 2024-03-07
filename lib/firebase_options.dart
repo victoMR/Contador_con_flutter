@@ -21,15 +21,9 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -53,11 +47,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDsuDUrGfSf6LO206ozL6T9_pqISh15oAI',
-    appId: '1:52009484379:web:75c361a460b37f4c01ff7e',
-    messagingSenderId: '52009484379',
-    projectId: 'pepe-69341',
-    authDomain: 'pepe-69341.firebaseapp.com',
-    storageBucket: 'pepe-69341.appspot.com',
+    apiKey: 'AIzaSyBZJg8rFLeT0zG8-LZxMIV6ruY2XzJNpbA',
+    appId: '1:726125712404:web:8f5f76de3c9de5b17b8301',
+    messagingSenderId: '726125712404',
+    projectId: 'authflutter-23a28',
+    authDomain: 'authflutter-23a28.firebaseapp.com',
+    storageBucket: 'authflutter-23a28.appspot.com',
+  );
+
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyAULuNDg7bRdGBERS8MyBs_JU6rcGY5ZGg',
+    appId: '1:726125712404:android:c2a97c5af5bfced57b8301',
+    messagingSenderId: '726125712404',
+    projectId: 'authflutter-23a28',
+    storageBucket: 'authflutter-23a28.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyBLKEdNTFA7Hm6IBBaXKyQPh66mNwC-D3Q',
+    appId: '1:726125712404:ios:8e77e701433645bc7b8301',
+    messagingSenderId: '726125712404',
+    projectId: 'authflutter-23a28',
+    storageBucket: 'authflutter-23a28.appspot.com',
+    iosClientId: '726125712404-4ujrf06kibq0miinv2edirh001q5fu3i.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flutterApp2',
   );
 }
